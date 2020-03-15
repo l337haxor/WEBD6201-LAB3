@@ -133,7 +133,7 @@ let app;
                 switch(child.id)
                 {
                     case "home":
-                        LoadPageContent("mainContent", "./Views/content/home.html");
+                        LoadPageContent("mainContent", "./Views/content/home.html", HomePageButton);
                         break;
                     case "products":
                         LoadPageContent("mainContent", "./Views/content/products.html", DisplayProductsContent);
@@ -170,7 +170,17 @@ let app;
 
        LoadPageContent("mainFooter","./Views/partials/footer.html");
 
-       // 1. CREATE A TRY / CATCH FOR EXCEPTION HANDLING
+       //Waits for the home page to load, then adds an onClick event to the task list button
+       HomePageButton()
+      
+    }
+    /**
+     * Adds task button on click event using ajax
+     *
+     */
+    function HomePageButton()
+    {
+         // 1. CREATE A TRY / CATCH FOR EXCEPTION HANDLING
        try {
         // 2. INSTANTIATE A NEW XHR OBJECT
         let XHR = new XMLHttpRequest();
@@ -179,9 +189,11 @@ let app;
             if((XHR.readyState === 4) && (XHR.status === 200))
             {
                 // 6. GET A RESPONSE FROM THE SERVER
+                //Add an onClick event to the task button
                 $("#taskListButton").on("click", function(){
                     LoadPageContent("mainContent", "./Views/content/tasklist.html", DisplayTaskListContent);
                 });
+                console.log("button loaded");
             }
         });
         // 4. OPEN A CHANNEL - MAKE A REQUEST WITH THE APPROPRIATE URL
