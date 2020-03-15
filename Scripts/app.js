@@ -134,7 +134,6 @@ let app;
                     case "home":
                         LoadPageContent("mainContent", "./Views/content/home.html");
                         break;
-                      
                     case "products":
                         LoadPageContent("mainContent", "./Views/content/products.html", DisplayProductsContent);
                         break;  
@@ -150,6 +149,9 @@ let app;
                     case "login":
                         LoadPageContent("mainContent", "./Views/content/login.html", DisplayLoginContent);
                         break;
+                    case "tasklist":
+                        LoadPageContent("mainContent", "./Views/content/tasklist.html", DisplayTaskListContent);
+                    break;
                 }
             }); 
         }
@@ -165,6 +167,7 @@ let app;
        LoadPageContent("mainContent", "./Views/content/home.html");
 
        LoadPageContent("mainFooter","./Views/partials/footer.html");
+  
        
     }
 
@@ -385,6 +388,57 @@ let app;
     function DisplayRegisterContent()
     {
         document.title = "WEBD6201 - Register";
+    }
+
+    
+
+    function DisplayTaskListContent()
+    {
+        document.title = "WEBD6201 - Task List";
+
+        
+        $("#newTaskButton").on("click", function(){
+            let inputText = $("#taskTextInput").val();
+
+            let newElement = 
+            `
+            <li class="list-group-item" id="task">
+            <span id="taskText">${inputText}</span>
+            <span class="float-right">
+                <button class="btn btn-outline-primary btn-sm editButton"><i class="fas fa-edit"></i>
+                <button class="btn btn-outline-danger btn-sm deleteButton"><i class="fas fa-trash-alt"></i></button>
+            </span>
+            <input type="text" class="form-control edit-task editTextInput">
+            </li>
+            `
+            
+            $("#taskList").append(newElement);
+        });
+
+        
+
+        $("ul").on("click", ".editButton", function(){
+           let editText = $(this).parent().parent().children(".editTextInput");
+           let text = $(this).parent().parent().text();
+           editText.val(text);
+           editText.show();
+           editText.select();
+           editText.keypress(function(event){
+            if(event.keyCode == "13")
+            {
+                editText.hide();
+                $(this).parent().children("#taskText").text(editText.val());
+            }
+           });
+        });
+
+       
+        $("ul").on("click", ".deleteButton", function(){
+            if(confirm("Are you sure?"))
+            {
+                $(this).closest("li").remove();
+            }    
+        });
     }
 
     /**
