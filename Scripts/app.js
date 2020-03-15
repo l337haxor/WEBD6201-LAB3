@@ -59,6 +59,7 @@ let app;
        let pageName = name.substring(1, name.length - 5);
 
        DisplayHomePageContent();
+
     }
 
     /**
@@ -160,6 +161,7 @@ let app;
 
     function DisplayHomePageContent()
     {
+        
         document.title = "WEBD6201 - Home";
 
        LoadPageContent("mainHeader","./Views/partials/header.html", activateNavbar, "home");
@@ -167,8 +169,28 @@ let app;
        LoadPageContent("mainContent", "./Views/content/home.html");
 
        LoadPageContent("mainFooter","./Views/partials/footer.html");
-  
-       
+
+       // 1. CREATE A TRY / CATCH FOR EXCEPTION HANDLING
+       try {
+        // 2. INSTANTIATE A NEW XHR OBJECT
+        let XHR = new XMLHttpRequest();
+        // 3. ADD AN EVENT LISTENER FOR "READSTATECHANGE"
+        XHR.addEventListener("readystatechange", function(){
+            if((XHR.readyState === 4) && (XHR.status === 200))
+            {
+                // 6. GET A RESPONSE FROM THE SERVER
+                $("#taskListButton").on("click", function(){
+                    LoadPageContent("mainContent", "./Views/content/tasklist.html", DisplayTaskListContent);
+                });
+            }
+        });
+        // 4. OPEN A CHANNEL - MAKE A REQUEST WITH THE APPROPRIATE URL
+         XHR.open("GET","./Views/content/home.html",true);
+         // 5. SEND THE REQUEST TO THE SERVER
+         XHR.send();
+        } catch (error) {
+            console.log("Error: " + error);
+        }
     }
 
     function DisplayProductsContent()
@@ -389,14 +411,10 @@ let app;
     {
         document.title = "WEBD6201 - Register";
     }
-
-    
-
     function DisplayTaskListContent()
     {
         document.title = "WEBD6201 - Task List";
 
-        
         $("#newTaskButton").on("click", function(){
             let inputText = $("#taskTextInput").val();
 
